@@ -43,9 +43,7 @@ def text_editor():
                 print("Autofill file error")
                 with open("settings/Autofill.txt", "w") as file:
                     file.write("1")
-                    print("Please restart")
-                    
-        
+
 
             if "!U" == user_typed.upper() and line > 0:
                 line -= 1
@@ -65,6 +63,9 @@ def text_editor():
 
             elif "!VA" == user_typed.upper():
                 print("".join(lines).rstrip("\n"))
+
+            elif "!COPY" == user_typed.upper():
+                pyperclip.copy(lines[line])
 
             elif "!QUIT" == user_typed.upper():
                 break
