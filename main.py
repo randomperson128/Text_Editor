@@ -170,13 +170,13 @@ while True:
 
         elif mode == 6: #settings
             while True:
-                print("Settings\n1. Autofill\n2. Background")
+                print("Settings\n1. Autofill\n2. Background\n3. Foreground")
                 mode = input("")
                 if mode == "":
                     break
                 try:
                     mode = int(mode)
-                    if mode <= 2 and mode >= 1:
+                    if mode <= 3 and mode >= 1:
                         break
                     else: print("Invaild option\n")
                 except ValueError:
@@ -200,13 +200,13 @@ while True:
             elif mode == 2:
                 
                 while True:
-                    print("1. Red   2. Blue   3. Green   4. Yellow    5. Black   6. Cancel")
+                    print("1. Red   2. Blue   3. Green   4. Yellow    5. Black   6. White   7. Cancel")
                     mode = input("")
                     if mode == "":
                         break
                     try:
                         mode = int(mode)
-                        if mode <= 6 and mode >= 1:
+                        if mode <= 7 and mode >= 1:
                             break
                         else: print("Invaild option\n")
                     except ValueError:
@@ -223,4 +223,38 @@ while True:
                 if mode == 5:
                     print(Back.BLACK +"")
                 if mode == 6:
+                    print(Back.WHITE +"")
+                    print("What is wrong with you?")
+                if mode == 7:
                     pass
+
+            elif mode == 3:
+                
+                while True:
+                    print("1. Red   2. Blue   3. Green   4. Yellow    5. Black   6. White   7. Cancel")
+                    mode = input("")
+                    if mode == "":
+                        break
+                    try:
+                        mode = int(mode)
+                        if mode <= 7 and mode >= 1:
+                            break
+                        else: print("Invaild option\n")
+                    except ValueError:
+                        print("Invaild option\n")
+
+                if mode == 1:
+                    print(Fore.RED +"")
+                elif mode == 2:
+                    print(Fore.BLUE +"")
+                if mode == 3:
+                    print(Fore.GREEN +"")
+                if mode == 4:
+                    print(Fore.YELLOW +"")
+                if mode == 5:
+                    print(Fore.BLACK +"")
+                if mode == 6:
+                    print(Fore.WHITE +"")
+                if mode == 7:
+                    pass
+
