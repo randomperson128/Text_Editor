@@ -15,6 +15,8 @@ try:
 except ModuleNotFoundError:
     print("Install pyperclip to use Copy to clipboard (recomended)")
 
+from colorama import Fore, Back 
+
 #check if autofill enabled 
 with open("settings/Autofill.txt", "r") as file:
     Autofill = file.read()
@@ -43,7 +45,9 @@ def text_editor():
                 print("Autofill file error")
                 with open("settings/Autofill.txt", "w") as file:
                     file.write("1")
-
+                    print("Please restart")
+                    
+        
 
             if "!U" == user_typed.upper() and line > 0:
                 line -= 1
@@ -63,9 +67,6 @@ def text_editor():
 
             elif "!VA" == user_typed.upper():
                 print("".join(lines).rstrip("\n"))
-
-            elif "!COPY" == user_typed.upper():
-                pyperclip.copy(lines[line])
 
             elif "!QUIT" == user_typed.upper():
                 break
@@ -169,13 +170,13 @@ while True:
 
         elif mode == 6: #settings
             while True:
-                print("Settings\n1. Autofill")
+                print("Settings\n1. Autofill\n2. Background")
                 mode = input("")
                 if mode == "":
                     break
                 try:
                     mode = int(mode)
-                    if mode <= 1 and mode >= 1:
+                    if mode <= 2 and mode >= 1:
                         break
                     else: print("Invaild option\n")
                 except ValueError:
@@ -196,7 +197,30 @@ while True:
                     Autofill = "1"
                     print("turned on autofill.")
 
+            elif mode == 2:
+                
+                while True:
+                    print("1. Red   2. Blue   3. Green   4. Yellow    5. Black   6. Cancel")
+                    mode = input("")
+                    if mode == "":
+                        break
+                    try:
+                        mode = int(mode)
+                        if mode <= 6 and mode >= 1:
+                            break
+                        else: print("Invaild option\n")
+                    except ValueError:
+                        print("Invaild option\n")
 
-
-
-
+                if mode == 1:
+                    print(Back.RED +"")
+                elif mode == 2:
+                    print(Back.BLUE +"")
+                if mode == 3:
+                    print(Back.GREEN +"")
+                if mode == 4:
+                    print(Back.YELLOW +"")
+                if mode == 5:
+                    print(Back.BLACK +"")
+                if mode == 6:
+                    pass
