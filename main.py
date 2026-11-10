@@ -15,27 +15,48 @@ try:
 except ModuleNotFoundError:
     print("Install pyperclip to use Copy to clipboard (recomended)")
 
-from colorama import Fore, Back 
+from random import randint
+from colorama import Fore, Back
+import climage
+import os
 
 #check if autofill enabled 
 with open("settings/Autofill.txt", "r") as file:
     Autofill = file.read()
 
-def show_docs():
-    for item in Path('docs').iterdir():
+def show_folder(name):
+    for item in Path(name).iterdir():
         if item.is_file():
             print(item.name)
 
-        
+def clear_screen():
+    os.system('cls')
+
 def text_editor():
+    try:
+        with open(f"RECOVERY_{doc_name}", "r") as file:
+            file.close
+            print(f"Recovery file found for {doc_name}")
+            RECOVERY_file = True
+            RECOVERY_file_text = file.readlines()
+    except: RECOVERY_file = False
+
+
     with open(f"docs/{doc_name}.txt", "r+") as file:
-        lines = file.readlines()
+        if RECOVERY_file == False:
+            lines = file.readlines()
+        else:
+            lines = RECOVERY_file_text
+
         if not lines:
             lines.append("\n")
         line = 0
         user_typed = ""
         while True:
             print(lines[line].rstrip("\n") + f" | line {line + 1} of {len(lines)}")
+
+            if lines[line][:5] == "!IMG ":
+                print(climage.convert(lines[line].rstrip("\n")[5:], is_unicode=True, width=50))
 
             if Autofill == "1":
                 user_typed = prompt("", default=(lines[line].rstrip("\n")))
@@ -46,9 +67,14 @@ def text_editor():
                 with open("settings/Autofill.txt", "w") as file:
                     file.write("1")
                     print("Please restart")
-                    
-        
 
+            
+            if randint(1,10) == 1:
+                with open(f"RECOVERY_{doc_name}", "w") as recovery:
+                    recovery.truncate()
+                    recovery.writelines(lines)
+
+                
             if "!U" == user_typed.upper() and line > 0:
                 line -= 1
 
@@ -65,10 +91,41 @@ def text_editor():
 
                 except ValueError: print("Invalid")
 
+            elif "!IMG" == user_typed.upper():
+                input("Please insert image in images folder\nPress ENTER to continue")
+
+                while True:
+                    show_folder("images")
+                    img = "images/" + input("\n Enter image name including (.png .jpg .jpeg .webp .bmp .gif): ")
+
+                    if img == "images/":
+                        break
+
+                    try:
+                        IMG = climage.convert(img, is_unicode=True, width=50)
+                        print(IMG)
+                        if input("Is this correct?(Y/n): ").lower() == "y":
+
+                            lines[line] = f"!IMG {img}" + "\n"
+                            if line == len(lines) - 1:
+                                lines.append("\n")
+                            line += 1
+                            break
+
+                    except FileNotFoundError:
+                        print("Image not found")
+
+
+                
+
             elif "!VA" == user_typed.upper():
                 print("".join(lines).rstrip("\n"))
 
             elif "!QUIT" == user_typed.upper():
+                clear_screen()
+                try:
+                    Path.unlink(f"RECOVERY_{doc_name}")
+                except: pass
                 break
 
             elif not user_typed.upper() == "!U" or not user_typed.upper() == "!D":
@@ -81,7 +138,13 @@ def text_editor():
         file.truncate()
         file.writelines(lines)
 
-            
+
+
+# =================================================
+
+# MAIN MENU
+
+# =================================================
 
 while True:
     while True:
@@ -118,7 +181,7 @@ while True:
 
         elif mode == 2:
             print("docs:\n")
-            show_docs()
+            show_folder("docs")
 
             while True:
                 doc_name = input("Enter doc name: ")
@@ -136,7 +199,7 @@ while True:
         elif mode == 3:
             while True:
                 print("docs:\n")
-                show_docs()
+                show_folder("docs")
                 doc_name = input("Enter name of doc to delete: ")
                 try:
                     with open(f"docs/{doc_name}.txt", "r"): #should crash if file dosen't exist.
@@ -151,7 +214,7 @@ while True:
                     print(f"{doc_name}.txt doesn't exist!")
 
         elif mode == 4:
-            show_docs()
+            show_folder("docs")
             doc_name = input("Enter doc name: ")
             try:
                 with open(f"docs/{doc_name}.txt", "r") as ImLokeyKindaTired: #should crash if file dosen't exist.
@@ -257,4 +320,3 @@ while True:
                     print(Fore.WHITE +"")
                 if mode == 7:
                     pass
-
