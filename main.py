@@ -15,6 +15,11 @@ try:
 except ModuleNotFoundError:
     print("Install pyperclip to use Copy to clipboard (recomended)")
 
+try:
+    import language_tool_python
+except ModuleNotFoundError:
+    print("Install language_tool_python to use spellcheck (whatever)")
+
 from random import randint
 from colorama import Fore, Back
 import climage
@@ -29,13 +34,13 @@ def show_folder(name):
         if item.is_file():
             print(item.name)
 
-def clear_screen():
-    os.system('cls')
-
 def text_editor():
+
+
+
+    # look for recovery files
     try:
         with open(f"RECOVERY_{doc_name}", "r") as file:
-            file.close
             print(f"Recovery file found for {doc_name}")
             RECOVERY_file = True
             RECOVERY_file_text = file.readlines()
@@ -56,7 +61,12 @@ def text_editor():
             print(lines[line].rstrip("\n") + f" | line {line + 1} of {len(lines)}")
 
             if lines[line][:5] == "!IMG ":
-                print(climage.convert(lines[line].rstrip("\n")[5:], is_unicode=True, width=50))
+                try:
+                    print(climage.convert(lines[line].rstrip("\n")[5:], is_unicode=True, width=50))
+                except FileNotFoundError:
+                    print("Image not found")
+                except:
+                    print("An unknown error ecured related to image loading")
 
             if Autofill == "1":
                 user_typed = prompt("", default=(lines[line].rstrip("\n")))
@@ -68,11 +78,12 @@ def text_editor():
                     file.write("1")
                     print("Please restart")
 
-            
+            #autosav
             if randint(1,10) == 1:
                 with open(f"RECOVERY_{doc_name}", "w") as recovery:
                     recovery.truncate()
                     recovery.writelines(lines)
+                LoadColors()
 
                 
             if "!U" == user_typed.upper() and line > 0:
@@ -139,6 +150,54 @@ def text_editor():
         file.writelines(lines)
 
 
+def LoadColors():
+    # load colors
+
+    # background
+
+    with open("settings/color/BG.txt", "r") as WowColors:
+        BG = WowColors.read()
+
+        if BG == "RED":
+            print(Back.RED)
+        elif BG == "BLUE":
+            print(Back.BLUE)
+        elif BG == "GREEN":
+            print(Back.GREEN)
+        elif BG == "YELLOW":
+            print(Back.YELLOW)
+        elif BG == "BLACK":
+            print(Back.BLACK)                
+        elif BG == "WHITE":
+            print(Back.WHITE)
+        else:
+            # error thingy
+            print("Background not loaded")
+
+    # forground
+
+    with open("settings/color/FG.txt", "r") as WowColors:
+        BG = WowColors.read()
+
+        if BG == "RED":
+            print(Fore.RED)
+        elif BG == "BLUE":
+            print(Fore.BLUE)
+        elif BG == "GREEN":
+            print(Fore.GREEN)
+        elif BG == "YELLOW":
+            print(Fore.YELLOW)
+        elif BG == "BLACK":
+            print(Fore.BLACK)                
+        elif BG == "WHITE":
+            print(Fore.WHITE)
+        else:
+            # error thingy
+            print("foreground not loaded")
+
+def clear_screen():
+    os.system('cls')
+    LoadColors()
 
 # =================================================
 
@@ -149,11 +208,12 @@ def text_editor():
 while True:
     while True:
         while True:
-            print("Select an option\n1. New doc\n2. Load doc\n3. Delete doc\n4. Copy doc\n5. Quit\n6. Settings")
+            LoadColors()
+            print("Select an option\n1. New doc\n2. Load doc\n3. Delete doc\n4. Copy doc\n5. Quit\n6. Settings\n7. Spellcheck (May break images)")
             mode = input("")
             try:
                 mode = int(mode)
-                if mode <= 6 and mode >= 1:
+                if mode <= 7 and mode >= 1:
                     break
                 else: print("Invaild option\n")
             except ValueError:
@@ -277,17 +337,41 @@ while True:
 
                 if mode == 1:
                     print(Back.RED +"")
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("RED")
+                        file.close()
+
                 elif mode == 2:
                     print(Back.BLUE +"")
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("BLUE")
+                        file.close()
+
                 if mode == 3:
                     print(Back.GREEN +"")
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("GREEN")
+                        file.close()
+
                 if mode == 4:
                     print(Back.YELLOW +"")
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("YELLOW")
+                        file.close()
+
                 if mode == 5:
                     print(Back.BLACK +"")
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("BLACK")
+                        file.close()
+
                 if mode == 6:
                     print(Back.WHITE +"")
-                    print("What is wrong with you?")
+                    print("What is wrong with you?") # fr tho who uses light mode
+                    with open("settings/color/BG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("WHITE")
+                        file.close()
+
                 if mode == 7:
                     pass
 
@@ -308,15 +392,69 @@ while True:
 
                 if mode == 1:
                     print(Fore.RED +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("RED")
+                        file.close()
+
                 elif mode == 2:
                     print(Fore.BLUE +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("BLUE")
+                        file.close()
+
                 if mode == 3:
                     print(Fore.GREEN +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("GREEN")
+                        file.close()
+
                 if mode == 4:
                     print(Fore.YELLOW +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("YELLOW")
+                        file.close()
+
                 if mode == 5:
                     print(Fore.BLACK +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("BLACK")
+                        file.close()
+
                 if mode == 6:
                     print(Fore.WHITE +"")
+                    with open("settings/color/FG.txt", "w") as BackGroundColorsYAY:
+                        BackGroundColorsYAY.write("WHITE")
+                        file.close()
+
                 if mode == 7:
                     pass
+
+
+        #autocorect
+        elif mode == 7:
+            show_folder("docs")
+            doc_name = input("Enter doc name: ")
+            try:
+                with open(f"docs/{doc_name}.txt", "r") as ImLokeyKindaTired: #should crash if file dosen't exist.
+                    print(f"correcting {doc_name}.txt")
+
+                    text = ImLokeyKindaTired.read()
+
+                    print(f"\nold\n\n{text}")
+
+                    tool = language_tool_python.LanguageTool('en-US')   # add imager avoider thing
+
+                    text = tool.correct(text)
+
+                    print(f"\nnew\n\n{text}")
+
+                    with open(f"docs{doc_name}_corrected.txt", "w") as ILoveCodingSocks:
+                        ILoveCodingSocks.write(text)
+
+                    tool.close()
+                    
+                break
+            except FileNotFoundError:
+                if doc_name == "":
+                    break
+                print(f"{doc_name}.txt doesn't exist!")   
