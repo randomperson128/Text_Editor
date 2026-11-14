@@ -448,10 +448,10 @@ while True:
 
                     print(f"\nnew\n\n{text}")
 
-                    with open(f"docs{doc_name}_corrected.txt", "w") as ILoveCodingSocks:
+                    with open(f"docs/{doc_name}_corrected.txt", "w") as ILoveCodingSocks:
                         ILoveCodingSocks.write(text)
 
-                    tool.close()
+                    tool.close() #closes language_tool_pyhton
                     
                 break
             except FileNotFoundError:
